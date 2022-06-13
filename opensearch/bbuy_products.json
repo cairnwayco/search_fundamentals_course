@@ -1,27 +1,5 @@
 {
   "settings": {
     "index.refresh_interval": "5s"
-  },
-  "mappings": {
-    "properties": {
-      "sku": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      },
-      "productID": {
-        "type": "text",
-        "fields": {
-          "keyword": {
-            "type": "keyword",
-            "ignore_above": 256
-          }
-        }
-      }
-    }
   }
 }

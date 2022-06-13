@@ -99,18 +99,21 @@ def main(source_dir: str, index_name: str):
                 continue
 
             #### Step 2.b: Create a valid OpenSearch Doc and bulk index 2000 docs at a time
-            the_doc = [
-                {
-                    "id": "doc_a",
-                    '_index': index_name,
-                    "sku": "sku1",
-                    "productID": "123"
-                }
-            ]
-            docs.append(the_doc)
-    toc = time.perf_counter()
-    logger.info(f'Done. Total docs: {docs_indexed}.  Total time: {((toc - tic) / 60):0.3f} mins.')
-
+            docs = []
+            tic = time.perf_counter()
+            for idx, row in ds.iterrows():
+                doc = {}
+                for col in ds.columns:
+                    doc[col] = row[col]
+            docs.append({'_index': index_name , '_source': doc})
+            if idx % 2000 == 0:
+                bulk(client, docs, request_timeout=60)
+                logger.info(f'{idx} documents indexed')
+                docs = []
+        if len(docs) > 0:
+            bulk(client, docs, request_timeout=60)
+        toc = time.perf_counter()
+        logger.info(f'Done indexing {ds.shape[0]} records. Total time: {((toc-tic)/60):0.3f} mins.')
 
 if __name__ == "__main__":
     main()
