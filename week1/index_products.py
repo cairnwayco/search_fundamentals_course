@@ -104,6 +104,7 @@ def main(source_dir: str, index_name: str):
                     "id": "doc_a",
                     '_index': index_name,
                     "sku": "sku1",
+                    "productID": "123"
                 }
             ]
             docs.append(the_doc)
