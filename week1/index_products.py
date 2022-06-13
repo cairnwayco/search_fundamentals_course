@@ -8,6 +8,7 @@ from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 import logging
 import time
+import json
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -60,7 +61,15 @@ def get_opensearch():
     auth = ('admin', 'admin')
 
     #### Step 2.a: Create a connection to OpenSearch
-    client = None
+    client = OpenSearch(
+        hosts = [{'host': host, 'port': port}],
+        http_compress = True,
+        http_auth = auth,
+        use_ssl = True,
+        verify_certs = False,
+        ssl_assert_hostname = False,
+        ssl_show_warn = False,
+        )
     return client
 
 
